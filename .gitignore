@@ -4,9 +4,6 @@ htmlReport
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-.idea/gradle.xml
-.idea/misc.xml
-build.gradle.kts
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
@@ -39,3 +36,5 @@ bin/
 .vscode/
 ### Mac OS ###
 .DS_Store
+# Ignore Gradle build output directory
+build
