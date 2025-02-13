@@ -1,9 +1,20 @@
-package Delivery;
+package Delivery.models;
 
-public class CargoSize {
-  private String cargoSize;
+public enum CargoSize {
+  LARGE(200),
+  SMALL(100);
 
-  public CargoSize(String cargoSize) {
+  private final int cargoSizeAddition;
+
+  CargoSize(int cargoSizeAddition) {
+    this.cargoSizeAddition = cargoSizeAddition;
+  }
+
+  public int getCargoSizeAddition() {
+    return cargoSizeAddition;
+  }
+
+ /* public CargoSize(String cargoSize) {
     if (cargoSize == null || !cargoSize.equals("large") && !cargoSize.equals("small")) {
       throw new IllegalArgumentException(
           "Размер груза некорекктный! Может быть только 'large' или 'small'");
@@ -16,4 +27,6 @@ public class CargoSize {
     if (cargoSize.equals("small")) return 100;
     return 0;
   }
+  */
+
 }

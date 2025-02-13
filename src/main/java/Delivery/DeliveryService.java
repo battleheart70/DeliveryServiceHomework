@@ -1,29 +1,32 @@
 package Delivery;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import Delivery.exceptions.FragileItemDistanceExceededException;
+import Delivery.strategies.*;
+import Delivery.validation.DeliveryValidator;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class DeliveryService {
-  public static BigDecimal getDeliveryCost(
-      String workload, int distance, String cargoSize, boolean isFragile)
-      throws FragileItemDistanceExceededException {
+  private final List<PricingStrategy> strategies;
+  public static final int MIN_COST = 400;
 
-    Distance distanceObj = new Distance(distance);
-    CargoSize cargoSizeObj = new CargoSize(cargoSize);
-    Fragility fragilityObj = new Fragility(isFragile);
-    DeliveryWorkload deliveryWorkload = new DeliveryWorkload(workload);
+  public DeliveryService() {
+    this.strategies =
+        Arrays.asList(
+            new DistanceStrategy(),
+            new FragilityPricing(),
+            new CargoSizePricing(),
+            new WorkloadPricing());
+  }
 
-    fragilityObj.checkDistance(distance);
+  public int calculateDeliveryCost(DeliveryRequest request) throws FragileItemDistanceExceededException {
+    DeliveryValidator.validate(request);
+    int price = 0;
+    for (PricingStrategy strategy : strategies){
+      price = strategy.calculate(price, request);
+    }
+    return Math.max(price, MIN_COST);
 
-    int deliveryCostBase =
-        distanceObj.getDistanceAddition()
-            + cargoSizeObj.getCargoSizeAddition()
-            + fragilityObj.getFragilityAddition();
-    BigDecimal deliveryCost =
-        BigDecimal.valueOf(deliveryCostBase)
-            .multiply(BigDecimal.valueOf(deliveryWorkload.getWorkloadAddition()))
-            .setScale(0, RoundingMode.HALF_UP);
-
-    return deliveryCost.max(BigDecimal.valueOf(400));
   }
 }

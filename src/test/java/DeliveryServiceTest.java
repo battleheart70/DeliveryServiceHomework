@@ -1,67 +1,102 @@
 import Delivery.DeliveryService;
-import Delivery.FragileItemDistanceExceededException;
+import Delivery.DeliveryRequest;
+import Delivery.exceptions.FragileItemDistanceExceededException;
+import Delivery.models.CargoSize;
+import Delivery.models.Workload;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class DeliveryServiceTest {
+  private final DeliveryService deliveryService = new DeliveryService();
 
   @ParameterizedTest
   @DisplayName("Проверка стоимости доставки")
   @Tag("Positive")
   @CsvSource({
-          "high, 25, large, true, 980", // нормальный случай
-          "normal, 5, small, true, 500", // нормальный случай
-          "elevated, 10, small, true, 600", // нормальный случай
-          "normal, 20, large, false, 400", // минимальная стоимость
-          "normal, 0, small, false, 400", // доставка на нулевое расстояние
-          "normal, 9999999, small, false, 400", // очень большое расстояние, минимальная стоимость
-          "normal, 1, small, false, 400", // доставка на минимальное расстояние
-          "very high, 15, large, true, 1120", // высокая загруженность
-          "high, 30, large, true, 980", // максимальное расстояние с хрупким грузом
-          "normal, 2, small, false, 400", // минимальное расстояние с малым грузом
-          "normal, 10, small, true, 500", // расстояние до 10 км с хрупким грузом
-          "normal, 31, small, false, 400", // расстояние чуть больше 30 км
-          "normal, 10, large, false, 400", // расстояние до 10 км, большой груз
-          "elevated, 2, large, true, 660", // малая дистанция с высоким коэффициентом загруженности
-          "very high, 2, small, true, 720", // малая дистанция с очень высоким коэффициентом загруженности
-          "very high, 2, large, false, 400" // малая дистанция, высокий коэффициент, не хрупкий груз
+          "HIGH, 25, LARGE, true, 980",
+          "NORMAL, 5, SMALL, true, 500",
+          "ELEVATED, 10, SMALL, true, 600",
+          "NORMAL, 20, LARGE, false, 400",
+          "NORMAL, 0, SMALL, false, 400",
+          "NORMAL, 9999999, SMALL, false, 400",
+          "NORMAL, 1, SMALL, false, 400",
+          "VERY_HIGH, 15, LARGE, true, 1120",
+          "HIGH, 30, LARGE, true, 980",
+          "NORMAL, 2, SMALL, false, 400",
+          "NORMAL, 10, SMALL, true, 500",
+          "NORMAL, 31, SMALL, false, 400",
+          "NORMAL, 10, LARGE, false, 400",
+          "ELEVATED, 2, LARGE, true, 660",
+          "VERY_HIGH, 2, SMALL, true, 720",
+          "VERY_HIGH, 2, LARGE, false, 400"
   })
-  void getDeliveryCost_ValidInputs_ReturnsExpectedCost(String workload, int distance, String cargoSize, boolean isFragile, BigDecimal expectedCost)
+  void getDeliveryCost_ValidInputs_ReturnsExpectedCost(Workload workload, int distance, CargoSize cargoSize, boolean isFragile, int expectedCost)
           throws FragileItemDistanceExceededException {
-    BigDecimal cost = DeliveryService.getDeliveryCost(workload, distance, cargoSize, isFragile);
+    DeliveryRequest request = new DeliveryRequest(distance, isFragile, cargoSize, workload);
+    int cost = deliveryService.calculateDeliveryCost(request);
     assertEquals(expectedCost, cost);
   }
 
   @ParameterizedTest
-  @DisplayName("Проверка невалидных данных")
-  @Tag ("Negative")
+  @DisplayName("Проверка некорректного workload и cargoSize")
   @CsvSource({
-          "invalid, 20, large, false", // некорректный workload
-          "normal, -5, small, false", // отрицательное расстояние
-          "normal, 10, null, false", // null для размера груза
-          "normal, 10, '', false", // пустая строка для размера груза
-          "normal, 10, invalid_size, false", // некорректный размер груза
-          "null, 10, small, true", // null для workload
+          "INVALID", // Некорректное значение для workload и cargoSize
+          "EMPTY",   // Пустая строка (заменено на "EMPTY" для проверки)
+          "NULL"     // Некорректная строка "NULL", которая не является настоящим null
   })
-  void getDeliveryCost_InvalidInputs_ThrowsIllegalArgumentException(String workload, int distance, String cargoSize, boolean isFragile) {
+  void getDeliveryCost_InvalidWorkloadOrCargoSize_ThrowsIllegalArgumentException(String value) {
     assertThrows(IllegalArgumentException.class, () -> {
-      DeliveryService.getDeliveryCost(workload, distance, cargoSize, isFragile);
+
+      try {
+        Workload workload = Workload.valueOf(value);
+        DeliveryRequest request = new DeliveryRequest(10, false, CargoSize.SMALL, workload);
+        deliveryService.calculateDeliveryCost(request);
+      } catch (IllegalArgumentException e) {
+
+        CargoSize cargoSize = CargoSize.valueOf(value);
+        DeliveryRequest request = new DeliveryRequest(10, false, cargoSize, Workload.NORMAL);
+        deliveryService.calculateDeliveryCost(request);
+      }
+    });
+  }
+
+  @Test
+  @DisplayName("Проверка null и пустых значений для workload и cargoSize")
+  void getDeliveryCost_NullOrEmptyWorkloadAndCargoSize_ThrowsIllegalArgumentException() {
+    assertThrows(IllegalArgumentException.class, () -> {
+
+      DeliveryRequest request = new DeliveryRequest(10, false, null, null);
+      deliveryService.calculateDeliveryCost(request);
+    });
+
+    assertThrows(IllegalArgumentException.class, () -> {
+
+      DeliveryRequest request = new DeliveryRequest(10, false, CargoSize.SMALL, null);
+      deliveryService.calculateDeliveryCost(request);
+    });
+  }
+
+  @Test
+  @DisplayName("Проверка отрицательного расстояния")
+  void getDeliveryCost_NegativeDistance_ThrowsIllegalArgumentException() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      DeliveryRequest request = new DeliveryRequest(-5, false, CargoSize.SMALL, Workload.NORMAL);
+      deliveryService.calculateDeliveryCost(request);
     });
   }
 
   @Test
   @DisplayName("Проверка отказа на перевозку хрупкого груза на большое расстояние")
-  @Tag ("CustomException")
+  @Tag("CustomException")
   void getDeliveryCost_InvalidInputs_ThrowsFragileItemDistanceExceededException() {
     assertThrows(FragileItemDistanceExceededException.class, () -> {
-      DeliveryService.getDeliveryCost("high", 35, "large", true);
+      DeliveryRequest request = new DeliveryRequest(35, true, CargoSize.LARGE, Workload.HIGH);
+      deliveryService.calculateDeliveryCost(request);
     });
   }
 }

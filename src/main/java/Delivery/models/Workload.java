@@ -1,9 +1,23 @@
-package Delivery;
+package Delivery.models;
 
-public class DeliveryWorkload {
-  private String workload;
+public enum Workload {
+  VERY_HIGH(1.6),
+  HIGH(1.4),
+  ELEVATED(1.2),
+  NORMAL(1);
 
-  public DeliveryWorkload(String workload) {
+  private final double multiplier;
+
+  Workload(double multiplier) {
+    this.multiplier = multiplier;
+  }
+
+  public double getMultiplier() {
+    return multiplier;
+  }
+
+
+ /* public Workload(String workload) {
     if (workload == null
         || !workload.equals("very high")
             && !workload.equals("high")
@@ -15,12 +29,12 @@ public class DeliveryWorkload {
     this.workload = workload;
   }
 
-  public double getWorkloadAddition() {
+  public double getMultiplier() {
     return switch (workload) {
       case "very high" -> 1.6;
       case "high" -> 1.4;
       case "elevated" -> 1.2;
       default -> 1; // normal
     };
-  }
+  }*/
 }
