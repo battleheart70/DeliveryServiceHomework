@@ -1,9 +1,12 @@
 .gradle
 build/
+htmlReport
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+.idea/gradle.xml
+.idea/misc.xml
+build.gradle.kts
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
@@ -15,7 +18,6 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -27,16 +29,13 @@ out/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-
 ### VS Code ###
 .vscode/
-
 ### Mac OS ###
 .DS_Store
