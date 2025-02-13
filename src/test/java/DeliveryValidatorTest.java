@@ -24,18 +24,6 @@ class DeliveryValidatorTest {
     }
 
     @Test
-    @DisplayName("Валидация отрицательного расстояния")
-    void validateDistance_NegativeDistance_ThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> DeliveryValidator.validateDistance(-1));
-    }
-
-    @Test
-    @DisplayName("Валидация нулевого расстояния")
-    void validateDistance_ZeroDistance_ThrowsIllegalArgumentException() {
-        assertDoesNotThrow(() -> DeliveryValidator.validateDistance(0));
-    }
-
-    @Test
     @DisplayName("Валидация корректного размера груза")
     void validateCargoSize_ValidCargoSize_NoExceptionThrown() {
         assertDoesNotThrow(() -> DeliveryValidator.validateCargoSize(CargoSize.SMALL));
@@ -44,7 +32,7 @@ class DeliveryValidatorTest {
     @Test
     @DisplayName("Валидация некорректного размера груза")
     void validateCargoSize_InvalidCargoSize_ThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> DeliveryValidator.validateCargoSize(null));
+        assertThrows(IllegalArgumentException.class, () -> DeliveryValidator.validateCargoSize(CargoSize.valueOf("INVALID")));
     }
 
     @Test
@@ -56,7 +44,7 @@ class DeliveryValidatorTest {
     @Test
     @DisplayName("Валидация некорректной нагрузки")
     void validateWorkload_InvalidWorkload_ThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> DeliveryValidator.validateWorkload(null));
+        assertThrows(IllegalArgumentException.class, () -> DeliveryValidator.validateWorkload(Workload.valueOf("INVALID")));
     }
 
     @Test

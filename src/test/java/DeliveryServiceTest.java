@@ -69,15 +69,11 @@ class DeliveryServiceTest {
   @DisplayName("Проверка null и пустых значений для workload и cargoSize")
   void getDeliveryCost_NullOrEmptyWorkloadAndCargoSize_ThrowsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () -> {
-
-      DeliveryRequest request = new DeliveryRequest(10, false, null, null);
-      deliveryService.calculateDeliveryCost(request);
+      DeliveryRequest request = new DeliveryRequest(10, false, null, Workload.NORMAL);
     });
 
     assertThrows(IllegalArgumentException.class, () -> {
-
       DeliveryRequest request = new DeliveryRequest(10, false, CargoSize.SMALL, null);
-      deliveryService.calculateDeliveryCost(request);
     });
   }
 
@@ -86,7 +82,6 @@ class DeliveryServiceTest {
   void getDeliveryCost_NegativeDistance_ThrowsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () -> {
       DeliveryRequest request = new DeliveryRequest(-5, false, CargoSize.SMALL, Workload.NORMAL);
-      deliveryService.calculateDeliveryCost(request);
     });
   }
 

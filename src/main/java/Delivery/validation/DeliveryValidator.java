@@ -17,7 +17,6 @@ public class DeliveryValidator {
     // Стандартные сообщения об ошибках
     private static final String INVALID_CARGO_SIZE_MESSAGE = "Размер груза некорректный! Доступные значения: SMALL, LARGE";
     private static final String INVALID_WORKLOAD_MESSAGE = "Нагрузка некорректная! Доступные значения: VERY_HIGH, HIGH, ELEVATED, NORMAL";
-    private static final String INVALID_DISTANCE_MESSAGE = "Расстояние должно быть больше 0!";
     private static final String INVALID_FRAGILE_DISTANCE_MESSAGE = "Хрупкий груз нельзя перевозить дальше " + MAX_FRAGILE_DISTANCE + " км!";
 
     public static void validate(DeliveryRequest deliveryRequest) throws FragileItemDistanceExceededException {
@@ -25,26 +24,20 @@ public class DeliveryValidator {
             throw new IllegalArgumentException("Запрос на доставку не может быть null!");
         }
 
-        validateDistance(deliveryRequest.distance());
         validateCargoSize(deliveryRequest.cargoSize());
         validateWorkload(deliveryRequest.workload());
         validateFragileItemDistance(deliveryRequest.distance(), deliveryRequest.isFragile());
     }
 
-    public static void validateDistance(int distance) {
-        if (distance < 0) {
-            throw new IllegalArgumentException(INVALID_DISTANCE_MESSAGE);
-        }
-    }
 
     public static void validateCargoSize(CargoSize cargoSize) {
-        if (cargoSize == null || !VALID_CARGO_SIZES.contains(cargoSize)) {
+        if (!VALID_CARGO_SIZES.contains(cargoSize)) {
             throw new IllegalArgumentException(INVALID_CARGO_SIZE_MESSAGE);
         }
     }
 
     public static void validateWorkload(Workload workload) {
-        if (workload == null || !VALID_WORKLOADS.contains(workload)) {
+        if (!VALID_WORKLOADS.contains(workload)) {
             throw new IllegalArgumentException(INVALID_WORKLOAD_MESSAGE);
         }
     }
