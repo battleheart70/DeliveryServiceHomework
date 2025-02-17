@@ -20,13 +20,13 @@ public class DeliveryService {
             new WorkloadPricing());
   }
 
-  public int calculateDeliveryCost(DeliveryRequest request) throws FragileItemDistanceExceededException {
+  public int calculateDeliveryCost(DeliveryRequest request)
+      throws FragileItemDistanceExceededException {
     DeliveryValidator.validate(request);
     int price = 0;
-    for (PricingStrategy strategy : strategies){
+    for (PricingStrategy strategy : strategies) {
       price = strategy.calculate(price, request);
     }
     return Math.max(price, MIN_COST);
-
   }
 }
