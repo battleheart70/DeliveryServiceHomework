@@ -12,4 +12,9 @@ public enum Urgency {
     public int getUrgencyAddition() {
         return urgencyAddition;
     }
+
+    @Override
+    public String toString() {
+        return "Для " + name() + " доставки добавочная стоимость " + urgencyAddition + " рублей";
+    }
 }

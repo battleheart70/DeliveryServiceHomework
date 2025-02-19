@@ -13,4 +13,9 @@ public enum CargoSize {
   public int getCargoSizeAddition() {
     return cargoSizeAddition;
   }
+
+  @Override
+  public String toString() {
+    return "Для " + name() + " груза добавочная стоимость " + cargoSizeAddition + " рублей";
+  }
 }

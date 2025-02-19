@@ -15,4 +15,9 @@ public enum Workload {
   public double getMultiplier() {
     return multiplier;
   }
+
+  @Override
+  public String toString() {
+    return "Для " + name() + " загрузки сервиса коэффициент: " + multiplier;
+  }
 }
