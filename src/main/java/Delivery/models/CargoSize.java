@@ -1,8 +1,11 @@
 package Delivery.models;
 
+import static Delivery.constants.DeliveryConstants.LARGE_CARGO_SIZE_SURCHARGE;
+import static Delivery.constants.DeliveryConstants.SMALL_CARGO_SIZE_SURCHARGE;
+
 public enum CargoSize {
-  LARGE(200),
-  SMALL(100);
+  LARGE(LARGE_CARGO_SIZE_SURCHARGE),
+  SMALL(SMALL_CARGO_SIZE_SURCHARGE);
 
   private final int cargoSizeAddition;
 

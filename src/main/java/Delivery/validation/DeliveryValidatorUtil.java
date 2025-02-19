@@ -3,11 +3,9 @@ package Delivery.validation;
 import Delivery.DeliveryRequest;
 import Delivery.exceptions.FragileItemDistanceExceededException;
 
-public class DeliveryValidatorUtil {
-  private static final int MAX_FRAGILE_DISTANCE = 30;
+import static Delivery.constants.DeliveryConstants.*;
 
-  private static final String INVALID_FRAGILE_DISTANCE_MESSAGE =
-      "Хрупкий груз нельзя перевозить дальше " + MAX_FRAGILE_DISTANCE + " км!";
+public class DeliveryValidatorUtil {
 
   private DeliveryValidatorUtil() {
     throw new UnsupportedOperationException("Это утилитарный класс, невозможно создать экземпляр!");
@@ -17,6 +15,11 @@ public class DeliveryValidatorUtil {
       throws FragileItemDistanceExceededException {
     if (deliveryRequest == null) {
       throw new IllegalArgumentException("Запрос на доставку не может быть null!");
+    }
+
+    if (deliveryRequest.distance() > MAX_DELIVERY_DISTANCE) {
+      throw new IllegalArgumentException(
+          "Расстояние не может быть больше " + MAX_DELIVERY_DISTANCE);
     }
     validateFragileItemDistance(deliveryRequest.distance(), deliveryRequest.isFragile());
   }

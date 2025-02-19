@@ -2,15 +2,17 @@ package Delivery.strategies;
 
 import Delivery.DeliveryRequest;
 
+import static Delivery.constants.DeliveryConstants.*;
+
 public class DistanceStrategy implements PricingStrategy {
 
   @Override
   public int calculate(int currentPrice, DeliveryRequest request) {
     double distance = request.distance();
 
-    if (distance > 30) return currentPrice + 300;
-    if (distance > 10) return currentPrice + 200;
-    if (distance > 2) return currentPrice + 100;
-    return currentPrice + 50;
+    if (distance > HIGH_DISTANCE_THRESHOLD) return currentPrice + HIGH_DISTANCE_SURCHARGE;
+    if (distance > MEDIUM_DISTANCE_THRESHOLD) return currentPrice + MEDIUM_DISTANCE_SURCHARGE;
+    if (distance > LOW_DISTANCE_THRESHOLD) return currentPrice + LOW_DISTANCE_SURCHARGE;
+    return currentPrice + BASE_DISTANCE_SURCHARGE;
   }
 }

@@ -7,6 +7,7 @@ import Delivery.models.Workload;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static Delivery.constants.DeliveryConstants.MAX_DELIVERY_DISTANCE;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DeliveryValidatorUtilTest {
@@ -41,5 +42,16 @@ class DeliveryValidatorUtilTest {
         FragileItemDistanceExceededException.class,
         () -> DeliveryValidatorUtil.validateFragileItemDistance(31, true),
         "Хрупкий груз нельзя перевозить дальше 30 км!");
+  }
+
+  @Test
+  @DisplayName("Валидация превышения максимального расстояния")
+  void validate_ExceedsMaxDistance_ThrowsIllegalArgumentException() {
+    DeliveryRequest request =
+        new DeliveryRequest(100.1, false, CargoSize.SMALL, Workload.NORMAL, Urgency.SAME_DAY);
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> DeliveryValidatorUtil.validate(request),
+            "Расстояние не может быть больше " + MAX_DELIVERY_DISTANCE);
   }
 }

@@ -7,9 +7,10 @@ import Delivery.validation.DeliveryValidatorUtil;
 
 import java.util.List;
 
+import static Delivery.constants.DeliveryConstants.MIN_COST;
+
 public class DeliveryService {
   private final PricingStrategyFactory strategyFactory;
-  public static final int MIN_COST = 400;
 
   public DeliveryService(PricingStrategyFactory strategyFactory) {
     this.strategyFactory = strategyFactory;

@@ -1,10 +1,12 @@
 package Delivery.models;
 
+import static Delivery.constants.DeliveryConstants.*;
+
 public enum Workload {
-  VERY_HIGH(1.6),
-  HIGH(1.4),
-  ELEVATED(1.2),
-  NORMAL(1);
+  VERY_HIGH(WORKLOAD_VERY_HIGH_MULTIPLIER),
+  HIGH(WORKLOAD_HIGH_MULTIPLIER),
+  ELEVATED(WORKLOAD_ELEVATED_MULTIPLIER),
+  NORMAL(WORKLOAD_NORMAL_MULTIPLIER);
 
   private final double multiplier;
 

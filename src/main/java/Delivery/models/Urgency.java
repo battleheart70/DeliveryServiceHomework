@@ -1,7 +1,10 @@
 package Delivery.models;
 
+import static Delivery.constants.DeliveryConstants.EXPRESS_URGENCY_SURCHARGE;
+import static Delivery.constants.DeliveryConstants.SAME_DAY_URGENCY_SURCHARGE;
+
 public enum Urgency {
-    STANDARD(0), EXPRESS(50), SAME_DAY(300);
+    STANDARD(0), EXPRESS(EXPRESS_URGENCY_SURCHARGE), SAME_DAY(SAME_DAY_URGENCY_SURCHARGE);
 
     private final int urgencyAddition;
 
