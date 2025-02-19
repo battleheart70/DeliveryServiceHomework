@@ -21,7 +21,7 @@ public class DeliveryValidator {
     validateFragileItemDistance(deliveryRequest.distance(), deliveryRequest.isFragile());
   }
 
-  public static void validateFragileItemDistance(int distance, boolean isFragile)
+  public static void validateFragileItemDistance(double distance, boolean isFragile)
       throws FragileItemDistanceExceededException {
     if (isFragile && distance > MAX_FRAGILE_DISTANCE) {
       throw new FragileItemDistanceExceededException(INVALID_FRAGILE_DISTANCE_MESSAGE);

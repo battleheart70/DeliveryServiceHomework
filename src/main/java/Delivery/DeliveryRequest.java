@@ -6,7 +6,7 @@ import Delivery.models.Urgency;
 import Delivery.models.Workload;
 
 public record DeliveryRequest(
-        int distance, boolean isFragile, CargoSize cargoSize, Workload workload, Urgency urgency) {
+        double distance, boolean isFragile, CargoSize cargoSize, Workload workload, Urgency urgency) {
   public DeliveryRequest {
     if (distance < 0) throw new IllegalArgumentException("Расстояние должно быть ≥ 0");
     if (cargoSize == null) throw new IllegalArgumentException("CargoSize не может быть null");

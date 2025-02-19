@@ -6,7 +6,7 @@ public class DistanceStrategy implements PricingStrategy {
 
   @Override
   public int calculate(int currentPrice, DeliveryRequest request) {
-    int distance = request.distance();
+    double distance = request.distance();
 
     if (distance > 30) return currentPrice + 300;
     if (distance > 10) return currentPrice + 200;
