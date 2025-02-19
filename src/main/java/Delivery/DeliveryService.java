@@ -3,7 +3,7 @@ package Delivery;
 import Delivery.exceptions.FragileItemDistanceExceededException;
 import Delivery.strategies.PricingStrategy;
 import Delivery.strategies.PricingStrategyFactory;
-import Delivery.validation.DeliveryValidator;
+import Delivery.validation.DeliveryValidatorUtil;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class DeliveryService {
 
   public int calculateDeliveryCost(DeliveryRequest request)
           throws FragileItemDistanceExceededException {
-    DeliveryValidator.validate(request);
+    DeliveryValidatorUtil.validate(request);
     List<PricingStrategy> strategies = strategyFactory.getStrategiesForType(request.getDeliveryType());
     int price = 0;
     for (PricingStrategy strategy : strategies) {

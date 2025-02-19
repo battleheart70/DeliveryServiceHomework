@@ -3,13 +3,13 @@ package Delivery.validation;
 import Delivery.DeliveryRequest;
 import Delivery.exceptions.FragileItemDistanceExceededException;
 
-public class DeliveryValidator {
+public class DeliveryValidatorUtil {
   private static final int MAX_FRAGILE_DISTANCE = 30;
 
   private static final String INVALID_FRAGILE_DISTANCE_MESSAGE =
       "Хрупкий груз нельзя перевозить дальше " + MAX_FRAGILE_DISTANCE + " км!";
 
-  private DeliveryValidator() {
+  private DeliveryValidatorUtil() {
     throw new UnsupportedOperationException("Это утилитарный класс, невозможно создать экземпляр!");
   }
 
