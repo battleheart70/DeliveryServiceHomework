@@ -1,3 +1,4 @@
+import Delivery.models.Urgency;
 import Delivery.validation.DeliveryValidator;
 import Delivery.DeliveryRequest;
 import Delivery.exceptions.FragileItemDistanceExceededException;
@@ -13,7 +14,7 @@ class DeliveryValidatorTest {
   @Test
   @DisplayName("Валидация корректного запроса на доставку")
   void validate_ValidRequest_NoExceptionThrown() {
-    DeliveryRequest request = new DeliveryRequest(10, false, CargoSize.SMALL, Workload.NORMAL);
+    DeliveryRequest request = new DeliveryRequest(10, false, CargoSize.SMALL, Workload.NORMAL, Urgency.SAME_DAY);
     assertDoesNotThrow(() -> DeliveryValidator.validate(request));
   }
 

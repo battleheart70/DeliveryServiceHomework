@@ -1,28 +1,24 @@
 package Delivery;
 
 import Delivery.exceptions.FragileItemDistanceExceededException;
-import Delivery.strategies.*;
+import Delivery.strategies.PricingStrategy;
+import Delivery.strategies.PricingStrategyFactory;
 import Delivery.validation.DeliveryValidator;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class DeliveryService {
-  private final List<PricingStrategy> strategies;
+  private final PricingStrategyFactory strategyFactory;
   public static final int MIN_COST = 400;
 
-  public DeliveryService() {
-    this.strategies =
-        Arrays.asList(
-            new DistanceStrategy(),
-            new FragilityPricing(),
-            new CargoSizePricing(),
-            new WorkloadPricing());
+  public DeliveryService(PricingStrategyFactory strategyFactory) {
+    this.strategyFactory = strategyFactory;
   }
 
   public int calculateDeliveryCost(DeliveryRequest request)
-      throws FragileItemDistanceExceededException {
+          throws FragileItemDistanceExceededException {
     DeliveryValidator.validate(request);
+    List<PricingStrategy> strategies = strategyFactory.getStrategiesForType(request.getDeliveryType());
     int price = 0;
     for (PricingStrategy strategy : strategies) {
       price = strategy.calculate(price, request);
