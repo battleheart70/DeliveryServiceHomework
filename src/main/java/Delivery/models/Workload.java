@@ -20,6 +20,6 @@ public enum Workload {
 
   @Override
   public String toString() {
-    return "Для " + name() + " загрузки сервиса коэффициент: " + multiplier;
+    return "For " + name() + " service workload multiplier is: " + multiplier;
   }
 }

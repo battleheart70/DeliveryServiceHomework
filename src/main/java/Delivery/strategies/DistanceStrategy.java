@@ -7,6 +7,11 @@ import static Delivery.constants.DeliveryConstants.*;
 public class DistanceStrategy implements PricingStrategy {
 
   @Override
+  public boolean isApplicable(DeliveryRequest request) {
+    return true;
+  }
+
+  @Override
   public int calculate(int currentPrice, DeliveryRequest request) {
     double distance = request.distance();
 
@@ -15,4 +20,5 @@ public class DistanceStrategy implements PricingStrategy {
     if (distance > LOW_DISTANCE_THRESHOLD) return currentPrice + LOW_DISTANCE_SURCHARGE;
     return currentPrice + BASE_DISTANCE_SURCHARGE;
   }
+
 }

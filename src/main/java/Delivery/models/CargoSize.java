@@ -19,6 +19,6 @@ public enum CargoSize {
 
   @Override
   public String toString() {
-    return "Для " + name() + " груза добавочная стоимость " + cargoSizeAddition + " рублей";
+    return "For " + name() + " cargo surcharge is " + cargoSizeAddition + " roubles";
   }
 }

@@ -10,19 +10,19 @@ import java.util.List;
 import static Delivery.constants.DeliveryConstants.MIN_COST;
 
 public class DeliveryService {
-  private final PricingStrategyFactory strategyFactory;
+  private final List<PricingStrategy> strategies;
 
   public DeliveryService(PricingStrategyFactory strategyFactory) {
-    this.strategyFactory = strategyFactory;
+    this.strategies = strategyFactory.getStrategies();
   }
 
-  public int calculateDeliveryCost(DeliveryRequest request)
-          throws FragileItemDistanceExceededException {
+  public int calculateDeliveryCost(DeliveryRequest request) throws FragileItemDistanceExceededException {
     DeliveryValidatorUtil.validate(request);
-    List<PricingStrategy> strategies = strategyFactory.getStrategiesForType(request.getDeliveryType());
     int price = 0;
     for (PricingStrategy strategy : strategies) {
-      price = strategy.calculate(price, request);
+      if (strategy.isApplicable(request)){
+        price = strategy.calculate(price, request);
+      }
     }
     return Math.max(price, MIN_COST);
   }

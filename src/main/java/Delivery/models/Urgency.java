@@ -18,6 +18,6 @@ public enum Urgency {
 
     @Override
     public String toString() {
-        return "Для " + name() + " доставки добавочная стоимость " + urgencyAddition + " рублей";
+        return "For " + name() + " delivery surcharge is " + urgencyAddition + " roubles";
     }
 }

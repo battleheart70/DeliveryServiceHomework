@@ -1,22 +1,26 @@
 package Delivery;
 
 import Delivery.models.CargoSize;
-import Delivery.models.DeliveryType;
 import Delivery.models.Urgency;
 import Delivery.models.Workload;
 
+/**
+ * Delivery request.
+ * Contains information about distance, cargo fragility, cargo size, workload, and urgency.
+ *
+ * @param distance delivery distance
+ * @param isFragile indicates if the cargo is fragile
+ * @param cargoSize cargo size
+ * @param workload workload
+ * @param urgency urgency
+ * @throws IllegalArgumentException if the distance is less than 0, or if cargoSize, workload, or urgency are null
+ */
 public record DeliveryRequest(
-    double distance, boolean isFragile, CargoSize cargoSize, Workload workload, Urgency urgency) {
+        double distance, boolean isFragile, CargoSize cargoSize, Workload workload, Urgency urgency) {
   public DeliveryRequest {
-    if (distance < 0) throw new IllegalArgumentException("Расстояние должно быть ≥ 0");
-    if (cargoSize == null) throw new IllegalArgumentException("CargoSize не может быть null");
-    if (workload == null) throw new IllegalArgumentException("Workload не может быть null");
-    if (urgency == null) throw new IllegalArgumentException("Urgency не может быть null");
-  }
-
-  public DeliveryType getDeliveryType() {
-    return (urgency == Urgency.EXPRESS || urgency == Urgency.SAME_DAY)
-        ? DeliveryType.URGENT
-        : DeliveryType.STANDARD;
+    if (distance < 0) throw new IllegalArgumentException("Distance must be ≥ 0");
+    if (cargoSize == null) throw new IllegalArgumentException("CargoSize cannot be null");
+    if (workload == null) throw new IllegalArgumentException("Workload cannot be null");
+    if (urgency == null) throw new IllegalArgumentException("Urgency cannot be null");
   }
 }
